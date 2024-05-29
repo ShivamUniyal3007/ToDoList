@@ -6,14 +6,23 @@ import authRoutes from "./routes/auth.route.js"
 import TodoModel from './models/todo.model.js'
 dotenv.config();
 import cors from 'cors'
+import path from 'path'
 mongoose.connect(process.env.MONGO)
 .then(()=>{console.log("mongodb is connected")})
 .catch(err=>{
     console.log(err);
 })
+
+const __dirname = path.resolve();
 const app = express();
 app.use(cors())
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 app.listen(3000,()=>{
     console.log("sever running on port 3000")
