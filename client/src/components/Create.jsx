@@ -1,12 +1,15 @@
 import { Button, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import axios from "axios";
+import { useSelector } from 'react-redux';
+
 export default function Create() {
+  const { currentUser } = useSelector((state) => state.user);
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const handleAdd = () => {
     axios
-      .post('http://localhost:3000/add', { title: title, description: description })
+      .post('http://localhost:3000/add', { title: title, description: description , userId:currentUser._id})
       .then((result) => location.reload())
       .catch((err) => console.log(err));
   };

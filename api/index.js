@@ -28,15 +28,19 @@ app.get('/get',(req,res)=>{
     .then(result=>res.json(result))
     .catch(err=>res.json(err));
 })
-app.post('/add',(req,res)=>{
-    const title = req.body.title;
-    const description = req.body.description;
-    TodoModel.create({
-        title:title,
-        description:description
-    }).then(result=>res.json(result))
-    .catch(err=>console.log(err));
-})
+
+app.post('/add', (req, res) => {
+  const { title, description, userId } = req.body;
+
+  TodoModel.create({
+    title: title,
+    description: description,
+    userId: userId 
+  })
+    .then(result => res.json(result))
+    .catch(err => console.log(err));
+});
+
 
 app.put('/update/:id', (req, res) => {
   const { id } = req.params;

@@ -3,8 +3,12 @@ import axios from "axios";
 import Create from "../components/Create";
 import { HiPencilAlt, HiTrash } from "react-icons/hi";
 import { Button, Modal, TextInput, Label, Textarea } from "flowbite-react";
+import { useSelector } from 'react-redux';
+
+
 
 export default function Home() {
+  const { currentUser } = useSelector((state) => state.user);
   const [todos, setTodos] = useState([]);
   const [editedId, setEditedId] = useState(null);
   const [editedTitle, setEditedTitle] = useState("");
@@ -17,6 +21,8 @@ export default function Home() {
       .then((result) => setTodos(result.data))
       .catch((err) => console.log(err));
   }, []);
+
+  const userTodos = todos.filter(todo => todo.userId === currentUser._id);
 
   const handleEdit = (todo) => {
     setEditedId(todo._id);
@@ -63,7 +69,7 @@ export default function Home() {
         </div>
       ) : (
         <div className="space-y-4">
-          {todos.map((todo) => (
+          {userTodos.map((todo) => (
             <div
               key={todo._id}
               className="px-4 py-2 bg-red-50 border border-red-200 rounded-lg"
